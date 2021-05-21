@@ -1,0 +1,203 @@
+.wizard {
+    margin: 20px auto;
+    background: #fff;
+}
+
+.wizard .nav-tabs {
+    position: relative;
+    margin: 40px auto;
+    margin-bottom: 0;
+    border-bottom-color: #e0e0e0;
+}
+
+.wizard > div.wizard-inner {
+    position: relative;
+}
+
+.connecting-line {
+    height: 2px;
+    background: #e0e0e0;
+    position: absolute;
+    width: 125%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 1;
+}
+
+.wizard .nav-tabs > li.active > a, .wizard .nav-tabs > li.active > a:hover, .wizard .nav-tabs > li.active > a:focus {
+    color: #555555;
+    cursor: default;
+    border: 0;
+    border-bottom-color: transparent;
+}
+
+.nav-tabs {
+    border-bottom: 0px !important;
+}
+
+span.round-tab {
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    display: inline-block;
+    border-radius: 100px;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    font-size: 25px;
+}
+span.round-tab i{
+    color:#555555;
+}
+.wizard li.active span.round-tab {
+    background: #fff;
+    border: 2px solid #046a38;
+
+}
+.wizard li.active span.round-tab i{
+    color: #046a38;
+}
+
+span.round-tab:hover {
+    color: #333;
+    border: 2px solid #333;
+}
+
+.wizard .nav-tabs > li {
+    width: 30%;
+}
+
+.wizard li:after {
+    content: " ";
+    position: absolute;
+    left: 46%;
+    opacity: 0;
+    margin: 0 auto;
+    bottom: 0px;
+    border: 5px solid transparent;
+    border-bottom-color: #046a38;
+    transition: 0.1s ease-in-out;
+}
+/*
+.wizard li.active:after {
+    content: " ";
+    position: absolute;
+    left: 46%;
+    opacity: 1;
+    margin: 0 auto;
+    bottom: 0px;
+    border: 10px solid transparent;
+    border-bottom-color: #046a38;
+}*/
+
+.wizard .nav-tabs > li a {
+    width: 70px;
+    height: 70px;
+    margin: 20px auto;
+    border-radius: 100%;
+    padding: 0;
+}
+
+.wizard .nav-tabs > li a:hover {
+    background: transparent;
+}
+
+.wizard .tab-pane {
+    position: relative;
+}
+
+.wizard h3 {
+    margin-top: 0;
+}
+
+@media( max-width : 585px ) {
+
+    .wizard {
+        width: 90%;
+        height: auto !important;
+    }
+
+    span.round-tab {
+        font-size: 16px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .wizard .nav-tabs > li a {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .wizard li.active:after {
+        content: " ";
+        position: absolute;
+        left: 35%;
+    }
+}
+
+.checkout .checkout-button-field {
+    text-align: left;
+    margin-left: 50px;
+    margin-bottom: 2rem;
+}
+
+.checkout .nav {
+    width: 100% !important;
+}
+
+.checkout .order-item {
+    display: flex;
+}
+
+.checkout .products-list .product-image img {
+    width: 135px;
+    height: 135px;
+    margin-right: 20px;
+}
+
+.checkout .product-shop .label {
+    color: #777;
+    font-weight: 700;
+    font-size: 14px;
+    margin-right: 7px;
+    margin-bottom: 0px;
+    margin-top: 0px !important;
+    padding: 0rem !important;
+}
+
+.checkout .product-shop .label span {
+    color: #000000;
+}
+.checkout .unit-price p {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 0px;
+    color: #777;
+    position: relative;
+    top: -3px;
+}
+
+.checkout .billing-info-area .info-list li p i {
+    margin-right: 5px;
+}
+
+.checkout .country-select {
+    height: 52px;
+}
+
+.checkout .input-city {
+    margin-top: 0px;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+    .checkout .products-list .product-shop {
+        margin: 0px 0 !important;
+    }
+}
