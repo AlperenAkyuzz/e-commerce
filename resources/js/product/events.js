@@ -149,7 +149,7 @@ $(document).ready(function() {
 
             if (data[0] == 1) {
                 toastr.success(trans('front.add_wish'));
-                //console.log('add_wish')
+                console.log('add_wish')
                 $('#wishlist-count').html(data[1]);
 
             } else {
@@ -194,9 +194,14 @@ $(document).ready(function() {
                 $('.cartpage .col-lg-4').html('');
             } else {
                 $('.cart-quantity').html(data[1]);
-                $('.cart-total').html(data[0]);
+                $("#cart-total").html(data[0]);
+                $("#main-total").html(data[5]);
                 $('.coupon-total').val(data[0]);
-                $('.main-total').html(data[3]);
+                if(data[6] == "0")  {
+                    $("#cargo-price").html(trans('front.free_cargo'));
+                } else {
+                    $("#cargo-price").html('₺'+data[6]);
+                }
             }
 
         });
@@ -240,13 +245,18 @@ $(document).ready(function() {
                 if (data == 0) {
                 } else {
                     $(".discount").html($("#d-val").val());
-                    $(".cart-total").html(data[0]);
-                    $(".main-total").html(data[3]);
+                    $("#cart-total").html(data[0]);
+                    $("#main-total").html(data[5]);
                     $(".coupon-total").val(data[3]);
                     $("#prc" + itemid).html(data[2]);
                     $("#prct" + itemid).html(data[4]);
                     $("#cqt" + itemid).html(data[1]);
                     $("#qty" + itemid).val(data[1]);
+                    if(data[6] == "0")  {
+                        $("#cargo-price").html(trans('front.free_cargo'));
+                    } else {
+                        $("#cargo-price").html('₺'+data[6]);
+                    }
                 }
 
                 $("#CssLoader").hide();
@@ -278,13 +288,19 @@ $(document).ready(function() {
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     $(".discount").html($("#d-val").val());
-                    $(".cart-total").html(data[0]);
-                    $(".main-total").html(data[3]);
+                    $("#cart-total").html(data[0]);
+                    $("#main-total").html(data[5]);
                     $(".coupon-total").val(data[3]);
                     $("#prc" + itemid).html(data[2]);
                     $("#prct" + itemid).html(data[4]);
                     $("#cqt" + itemid).html(data[1]);
                     $("#qty" + itemid).val(data[1]);
+                    if(data[6] == "0")  {
+                        $("#cargo-price").html(trans('front.free_cargo'));
+                    } else {
+                        $("#cargo-price").html('₺'+data[6]);
+                    }
+
 
                     $("#CssLoader").hide();
                 }

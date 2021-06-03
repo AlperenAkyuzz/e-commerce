@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Session;
 
 use Validator;
@@ -18,8 +19,9 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        $this->code_image();
-        return view('theme::pages.user.login');
+        //$this->code_image();
+        $services = DB::table('services')->where('user_id','=',0)->get();
+        return view('theme::pages.user.login', compact('services'));
         //return view('user.login');
     }
 

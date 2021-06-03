@@ -3,8 +3,8 @@
          style="background:url({{ asset('themes/organtic/assets/img/h48.jpg') }}) no-repeat top left;">
         <div class="assetBlock">
             <div id="slideshow">
-                <p>{{ $header_title }} - Get <span>50%</span> off on vegetables </p>
-                <p>sale <span>40%</span> of on bulk shopping! </p>
+                <p> <span>{{ $gs->free_cargo_price }}₺</span> üzeri alışverişlerde <span>{!! __('front.free_cargo') !!}</span> </p>
+                <p> <span>{{ $gs->free_cargo_price }}₺</span> üzeri alışverişlerde <span>{!! __('front.free_cargo') !!}</span> </p>
             </div>
         </div>
     </div>
@@ -23,6 +23,50 @@
                             <div class="mm-toggle"><i class="icon-align-justify"></i><span class="mm-label">Menu</span>
                             </div>
                         </div>
+                        <div class="header-search-area">
+                            @livewire('search-products')
+                        </div>
+                    </nav>
+                </div>
+
+                <!--row-->
+
+                <div class="fl-header-right">
+                    <div class="fl-links">
+                        <div class="no-js"><a title="Company" class="clicker"></a>
+                            <div class="fl-nav-links">
+                                <ul class="links">
+                                    <li><a title="{{ __('auth.my-account') }}" href="{{ route('user-dashboard') }}">@if(Auth::guard('web')->check()) {{ __('auth.my-account') }} @else {{ __('auth.Login') }} @endif</a> </li>
+                                    <li><a title="{{ __('front.wishlist') }}" href="{{ route('user-wishlists') }}">{{ __('front.wishlist') }}</a> </li>
+                                    @if(Auth::guard('web')->check())
+                                        <li class="last"><a title="{{ __('auth.Logout') }}" href="{{ route('user-logout') }}">{{ __('auth.Logout') }}</a> </li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fl-cart-contain">
+                        <div class="mini-cart">
+                            <div class="basket"><a href="{{ route('front.cart') }}"><span
+                                            class="cart-count"> {{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }} </span></a>
+                            </div>
+                            <div class="cart-load">
+                                @include('theme::load.cart')
+                            </div>
+                        </div>
+                    </div>
+                    <!--mini-cart-->
+                    <!--links-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="header header-categories">
+        <div class="container">
+            <div class="header-container row">
+                <div class="fl-nav-menu">
+                    <nav>
                         <div class="nav-inner">
                             <!-- BEGIN NAV -->
                             <ul id="nav" class="hidden-xs">
@@ -88,7 +132,7 @@
                                     </li>
                                 @endforeach
                                 @foreach(DB::table('pages')->where('header','=',1)->get() as $data)
-                                    <li class="mega-menu"><a class="level-top" href="{{ route('front.page',$data->slug) }}"><span>{{ $data->title }}</span></a></li>
+                                    <li class="mega-menu"><a class="level-top" href="{{ url($data->slug) }}"><span>{{ $data->title }}</span></a></li>
                                 @endforeach
 
                                 {{--<li class="level0 parent drop-menu"><a href="#"><span>Pages</span> </a>
@@ -140,75 +184,6 @@
                     </nav>
                 </div>
 
-                <!--row-->
-
-                <div class="fl-header-right">
-                    <div class="fl-links">
-                        <div class="no-js"><a title="Company" class="clicker"></a>
-                            <div class="fl-nav-links">
-                                <div class="language-currency">
-                                    <div class="fl-language">
-                                        <ul class="lang">
-                                            <li><a href="#"> <img
-                                                            src="{{ asset('themes/organtic/assets/img/english.png') }}"
-                                                            alt="English">
-                                                    <span>English</span> </a></li>
-                                            <li><a href="#"> <img
-                                                            src="{{ asset('themes/organtic/assets/img/francais.png') }}"
-                                                            alt="French">
-                                                    <span>French</span> </a></li>
-                                            <li><a href="#"> <img
-                                                            src="{{ asset('themes/organtic/assets/img/german.png') }}"
-                                                            alt="German">
-                                                    <span>German</span> </a></li>
-                                        </ul>
-                                    </div>
-                                    <!--fl-language-->
-                                    <!-- END For version 1,2,3,4,6 -->
-                                    <!-- For version 1,2,3,4,6 -->
-                                    <div class="fl-currency">
-                                        <ul class="currencies_list">
-                                            <li><a href="#" title="EGP"> £</a></li>
-                                            <li><a href="#" title="EUR"> €</a></li>
-                                            <li><a href="#" title="USD"> $</a></li>
-                                        </ul>
-                                    </div>
-                                    <!--fl-currency-->
-                                    <!-- END For version 1,2,3,4,6 -->
-                                </div>
-                                <ul class="links">
-                                    <li><a href="dashboard.html" title="My Account">My Account</a></li>
-                                    <li><a href="wishlist.html" title="Wishlist">Wishlist</a></li>
-                                    <li><a href="checkout.html" title="Checkout">Checkout</a></li>
-                                    <li><a href="blog.html" title="Blog"><span>Blog</span></a></li>
-                                    <li class="last"><a href="login.html" title="Login"><span>Login</span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fl-cart-contain">
-                        <div class="mini-cart">
-                            <div class="basket"><a href="{{ route('front.cart') }}"><span
-                                            class="cart-count"> {{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }} </span></a>
-                            </div>
-                            <div class="cart-load">
-                                @include('theme::load.cart')
-                            </div>
-                        </div>
-                    </div>
-                    <!--mini-cart-->
-                    <div class="collapse navbar-collapse">
-                        <form class="navbar-form" role="search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search">
-                                <span class="input-group-btn">
-                                    <button type="submit" class="search-btn"> <span class="glyphicon glyphicon-search">
-                                            <span class="sr-only">Search</span> </span> </button>
-                                </span></div>
-                        </form>
-                    </div>
-                    <!--links-->
-                </div>
             </div>
         </div>
     </div>

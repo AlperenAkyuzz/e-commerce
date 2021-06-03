@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Parionsoft E-commerce Systems
+ * © Parionsoft.com. All Rights Reserved.
+ */
+
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;

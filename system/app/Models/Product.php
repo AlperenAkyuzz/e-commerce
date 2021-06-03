@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Session;
 class Product extends Model
 {
 
+    use Search;
+
+    protected $searchable = [
+        'name',
+        //'tags',
+    ];
+
     protected $fillable = ['user_id', 'category_id', 'product_type', 'affiliate_link', 'sku', 'subcategory_id', 'childcategory_id', 'attributes', 'name', 'photo', 'size', 'size_qty', 'size_price', 'color', 'details', 'price', 'previous_price', 'stock', 'policy', 'status', 'views', 'tags', 'featured', 'best', 'top', 'hot', 'latest', 'big', 'trending', 'sale', 'features', 'colors', 'product_condition', 'ship', 'meta_tag', 'meta_description', 'youtube', 'type', 'file', 'license', 'license_qty', 'link', 'platform', 'region', 'licence_type', 'measure', 'discount_date', 'is_discount', 'whole_sell_qty', 'whole_sell_discount', 'catalog_id', 'slug', 'brand_id', 'shipper_id', 'weight', 'free_shipping', 'tax'];
 
     public static function filterProducts($collection)

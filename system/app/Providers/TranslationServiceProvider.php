@@ -2,6 +2,7 @@
 
 
 namespace App\Providers;
+
 namespace App\Providers;
 
 use Illuminate\Support\Facades\App;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 
 class TranslationServiceProvider extends ServiceProvider
@@ -27,7 +29,13 @@ class TranslationServiceProvider extends ServiceProvider
      */
     public function __construct()
     {
-        $this->langPath = resource_path('lang/'.App::getLocale());
+        $lang = App::getLocale();
+        if (Str::length($lang) > 2) {
+            $this->langPath = resource_path('lang/tr');
+        } else {
+            $this->langPath = resource_path('lang/' . App::getLocale());
+        }
+
     }
 
     /**
@@ -37,6 +45,7 @@ class TranslationServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //dd($this->langPath);
         Cache::rememberForever('translations', function () {
             return collect(File::allFiles($this->langPath))->flatMap(function ($file) {
                 return [

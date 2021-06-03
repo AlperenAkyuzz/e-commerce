@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Validator;
 use Session;
 use App\Models\User;
 use App\Models\Category;
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
+        setlocale(LC_TIME, 'Turkish');
         if (env('APP_ENV') !== 'production') {
             DB::connection()->enableQueryLog();
             Event::listen('kernel.handled', function ($request, $response) {
@@ -47,10 +49,32 @@ class AppServiceProvider extends ServiceProvider
         App::setlocale($admin_lang->name);
         User::chekValidation();
 
-        view()->composer('*',function($settings){
+        $general_settings = DB::table('generalsettings')->first();
 
-            $settings->with('gs', cache()->remember('generalsettings', now()->addDay(), function () {
-                return DB::table('generalsettings')->first();
+        /** Set Mail Configuration */
+        if($general_settings->header_email == 'smtp') {
+            $mail_driver = 'smtp';
+        }
+        else{
+            if($general_settings->header_email == 'sendmail') {
+                $mail_driver = 'sendmail';
+            }
+            else {
+                $mail_driver = 'smtp';
+            }
+        }
+        \Config::set('mail.driver', $mail_driver);
+        \Config::set('mail.host', $general_settings->smtp_host);
+        \Config::set('mail.port', $general_settings->smtp_port);
+        \Config::set('mail.encryption', $general_settings->email_encryption);
+        \Config::set('mail.username', $general_settings->smtp_user);
+        \Config::set('mail.password', $general_settings->smtp_pass);
+        /** End Mail Configuration */
+
+        view()->composer('*',function($settings) use ($general_settings) {
+
+            $settings->with('gs', cache()->remember('generalsettings', now()->addDay(), function () use ($general_settings) {
+                return $general_settings;
             }));
 
             $settings->with('ps', cache()->remember('pagesettings', now()->addDay(), function () {
@@ -96,6 +120,20 @@ class AppServiceProvider extends ServiceProvider
             Session::put('popup' , 1);
 
         });
+
+        Validator::extend('recaptcha', function ($attribute, $value, $parameters, $validator) use ($general_settings) {
+            $recaptcha3url =  'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($general_settings->recaptcha_secret) .  '&response=' . urlencode($value);
+
+            $response = file_get_contents($recaptcha3url);
+            $responseKeys = json_decode($response, true);
+
+            //var_dump($responseKeys);
+            if($responseKeys["success"]) {
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     /**
@@ -120,6 +158,12 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
+    }
+
+    private function defineHooks() {
+        User::created(function($model){
+            // when user created this function running
+        });
     }
 
     /***

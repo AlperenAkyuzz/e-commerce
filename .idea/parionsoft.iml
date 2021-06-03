@@ -47,6 +47,10 @@
       <excludeFolder url="file://$MODULE_DIR$/system/vendor/cartalyst/stripe-laravel" />
       <excludeFolder url="file://$MODULE_DIR$/system/vendor/maximebf/debugbar" />
       <excludeFolder url="file://$MODULE_DIR$/system/vendor/barryvdh/laravel-debugbar" />
+      <excludeFolder url="file://$MODULE_DIR$/system/vendor/mews/pos" />
+      <excludeFolder url="file://$MODULE_DIR$/system/vendor/symfony/serializer" />
+      <excludeFolder url="file://$MODULE_DIR$/system/vendor/iyzico/iyzipay-php" />
+      <excludeFolder url="file://$MODULE_DIR$/system/vendor/livewire/livewire" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

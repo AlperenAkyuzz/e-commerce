@@ -140,6 +140,10 @@
       <path value="$PROJECT_DIR$/system/vendor/cartalyst/stripe-laravel" />
       <path value="$PROJECT_DIR$/system/vendor/maximebf/debugbar" />
       <path value="$PROJECT_DIR$/system/vendor/barryvdh/laravel-debugbar" />
+      <path value="$PROJECT_DIR$/system/vendor/mews/pos" />
+      <path value="$PROJECT_DIR$/system/vendor/symfony/serializer" />
+      <path value="$PROJECT_DIR$/system/vendor/iyzico/iyzipay-php" />
+      <path value="$PROJECT_DIR$/system/vendor/livewire/livewire" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

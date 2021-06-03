@@ -19,6 +19,9 @@ class VerifyCsrfToken extends Middleware
         '/razorpay-callback',
         '/user/razorpay/notify',
 
+        '/garanti-callback',
+        '/iyzipay-callback',
+
         '/addnumcart',
 
     ];

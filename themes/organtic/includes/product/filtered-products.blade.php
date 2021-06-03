@@ -49,7 +49,7 @@
                                                         <del>{{ $product->showPreviousPrice() }}</del>
                                                     @endif
                                                     <span class="regular-price">
-                                                        <span class="price">{{ $product->vendorPrice() }} TL </span>
+                                                        <span class="price">{{ number_format($product->price, 2, ",", ".")}} TL </span>
                                                     </span>
                                                 </div>
                                             </div>
@@ -67,9 +67,9 @@
     </div>
 @else
     @if(isset($ajax_check) && $ajax_check == 1)
-        <h4 style="margin-top:0px;">Seçtiğiniz kriterlere göre uygun ürün bulunamadı.</h4>
+        <h4 style="margin-top:30px;">Seçtiğiniz kriterlere göre uygun ürün bulunamadı.</h4>
     @else
-        <h4 style="margin-top:0px;">Bu kategoride ürün yok</h4>
+        <h4 style="margin-top:30px;">Bu kategoride ürün yok</h4>
     @endif
 @endif
 </div>

@@ -3,11 +3,17 @@
 @section('theme::styles')
 
     <style>
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
         .brand-slider .owl-item .item .logo-item > a > img {
             width: 200px;
         }
     </style>
 @endsection
+
+
 
 @section('theme::content')
 
@@ -64,7 +70,8 @@
                 navigation : false,
                 navigationText : ["<a class=\"flex-prev\"></a>","<a class=\"flex-next\"></a>"],
                 slideSpeed : 500,
-                pagination :true
+                pagination :true,
+
             })
         }
 

@@ -14,7 +14,7 @@
                                            title="{{ $data->title }}"><span>{{ $data->title }}</span></a></li>
                                 @endforeach
                                 @if($gs->is_faq == 1)
-                                    <li><a href="{{ url('front.faq') }}"
+                                    <li><a href="{{ url('faq') }}"
                                            title="{{ __('front.faq') }}"><span>{{ __('front.faq') }}</span></a></li>
                                 @endif
                             </ul>

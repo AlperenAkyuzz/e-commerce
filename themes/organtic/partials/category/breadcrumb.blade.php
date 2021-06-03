@@ -6,7 +6,7 @@
                     <ul>
 
                         <li>
-                            <a href="{{route('front.index')}}">{{ $langg->lang17 }} </a>
+                            <a href="{{route('front.index')}}">{{ __('front.home') }} </a>
                         </li>
                         @if (!empty($cat))
                             <li>
@@ -25,7 +25,7 @@
                         @endif
                         @if (empty($childcat) && empty($subcat) && empty($cat))
                             <li>
-                                <a href="{{route('front.category')}}">{{ $langg->lang36 }}</a>
+                                <a href="{{route('front.category')}}">{{  __('front.search') }}</a>
                             </li>
                         @endif
                     </ul>
@@ -37,6 +37,6 @@
         <!--container-->
     </div>
     <div class="page-title">
-        <h2>{{ $catalogName }}</h2>
+        <h2>{{ $catalogName ?? __('front.products') }}</h2>
     </div>
 </div>

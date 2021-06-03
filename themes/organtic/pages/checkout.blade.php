@@ -42,7 +42,7 @@
                             </ul>
                         </div>
 
-                        <form id="" action="" method="POST" class="checkoutform">
+                        <form id="" action="{{ route('garanti-submit') }}" method="POST" class="checkoutform">
                             @include('includes.form-success')
                             @include('includes.form-error')
 

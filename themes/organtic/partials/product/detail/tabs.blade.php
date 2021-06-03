@@ -1,8 +1,8 @@
 <div class="product-collateral container">
     <ul id="product-detail-tab" class="nav nav-tabs product-tabs">
-      <li class="active"> <a href="#product_tabs_description" data-toggle="tab"> {{ __('front.product_description') }} </a>
+      <li class="active" id="description_tab_link"> <a href="#product_tabs_description" data-toggle="tab"> {{ __('front.product_description') }} </a>
       </li>
-      <li> <a href="#reviews_tabs" data-toggle="tab">{{ __('front.reviews') }}</a> </li>
+      <li id="review_tab_link"> <a href="#reviews_tabs" data-toggle="tab">{{ __('front.reviews') }}</a> </li>
     </ul>
     <div id="productTabContent" class="tab-content">
       <div class="tab-pane fade in active" id="product_tabs_description">

@@ -25,7 +25,8 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('user.dashboard',compact('user'));
+        //return view('user.dashboard',compact('user'));
+        return view('theme::pages.user.order.index',compact('user'));
     }
 
     public function profile()
@@ -184,7 +185,7 @@ class UserController extends Controller
     {
         $user = Auth::guard('web')->user();
         $favorites = FavoriteSeller::where('user_id','=',$user->id)->get();
-        return view('user.favorite',compact('user','favorites'));
+        return view('theme::pages.user.favorite-seller',compact('user','favorites'));
     }
 
 

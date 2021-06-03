@@ -33,7 +33,27 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600,800,400' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i,900" rel="stylesheet">
 
-   
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+
+    <style>
+
+
+        .search-bar-results {
+            position: absolute;
+            top: 90px;
+            left: 220px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .search-bar-input {
+            position: inherit;
+            width: 70%;
+        }
+
+    </style>
+    @livewireStyles
 </head>
 <body>
     <div id="page">
@@ -64,6 +84,8 @@
     <script src="{{ asset(mix('themes/organtic/assets/js/app.js')) }}"></script>
 
     @yield('theme::scripts')
+
+    @livewireScripts
 
     <script type="text/javascript">
         window.translations = {!! Cache::get('translations') !!};

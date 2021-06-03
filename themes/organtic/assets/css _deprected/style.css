@@ -12510,16 +12510,16 @@ button.button.login:before {
 }
 
 .logo-brand .owl-theme .owl-controls .owl-page span:hover {
-    background: #a8ca01;
+    background: #046a38;
 }
 
 .logo-brand .owl-theme .owl-controls.clickable .owl-page:hover span {
-    background: #a8ca01;
+    background: #046a38;
 }
 
 .logo-brand .owl-theme .owl-controls .owl-page.active span {
     width: 30px;
-    background: #a8ca01;
+    background: #046a38;
     border-radius: 10px;
 }
 

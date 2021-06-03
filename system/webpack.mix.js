@@ -29,7 +29,8 @@ mix.scripts([
     '../resources/js/index/index.js',
     '../resources/js/product/events.js',
     '../resources/js/checkout/events.js',
-    '../resources/js/category/events.js'
+    '../resources/js/category/events.js',
+    '../resources/js/user/events.js'
 ], '../themes/organtic/assets/js/app.js')
     .styles([
         '../resources/css/bootstrap.min.css',
@@ -41,6 +42,7 @@ mix.scripts([
         '../resources/css/style.css',
         '../resources/css/responsive.css',
         '../resources/css/checkout.css',
-        '../resources/css/user/login.css'
+        '../resources/css/user/login.css',
+        '../resources/css/custom.css'
     ], '../themes/organtic/assets/css/app.css')
     .version();

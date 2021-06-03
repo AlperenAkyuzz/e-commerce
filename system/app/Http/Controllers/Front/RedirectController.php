@@ -25,7 +25,7 @@ class RedirectController extends Controller
             $controller = new FrontendController();
             return $controller->page($slug);
         }
-        return view('theme::errors.404');
+        return view('theme::errors.404')->setStatusCode(404);
     }
 }
 

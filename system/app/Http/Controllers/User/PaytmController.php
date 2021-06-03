@@ -331,9 +331,7 @@ class PaytmController extends Controller
 			return $responseParamList;
 		}
 	}
-	/**
-	 * Config Paytm Settings from config_paytm.php file of paytm kit
-	 */
+
 	function getConfigPaytmSettings() {
     $gs = Generalsetting::first();
 

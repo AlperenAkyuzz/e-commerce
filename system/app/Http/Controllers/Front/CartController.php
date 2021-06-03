@@ -52,12 +52,15 @@ class CartController extends Controller
             $mainTotal = $totalPrice + $tax;
         }
 
+        //dd(round($totalPrice,1));
         //dd($products);
 
         // Kargo Hesaplama
-        $cargoPrice = $this->getCargoPrice();
-        $subTotal = $totalPrice;
+        $cargoPrice = CartController::getCargoPrice();
+        $subTotal = round($totalPrice,1);
         $mainTotal = $subTotal + $cargoPrice;
+
+        //dd($subTotal);
 
 
         //return view('front.cart', compact('products','totalPrice','mainTotal','tx'));
@@ -69,7 +72,10 @@ class CartController extends Controller
         return view('theme::load.cart');
     }
 
-    public function getCargoPrice() {
+    static public function getCargoPrice() {
+
+        $gs = Generalsetting::findOrFail(1);
+
 
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
@@ -108,7 +114,13 @@ class CartController extends Controller
             $cargoPrice += $value; // Dizideki değerleri topluyoruz.
         }
 
+        //dd($cart->totalPrice);
+        if($cart->totalPrice >= $gs->free_cargo_price) {
+            $cargoPrice = 0;
+        }
+
         return $cargoPrice;
+
     }
 
     public function addtocart($id)
@@ -167,7 +179,7 @@ class CartController extends Controller
             $prod->price = round($prc, 2);
         }
 
-        $prod->price = round($prod->price + ($prod->price * $prod->tax) / 100, 2);
+        $prod->price = round($prod->price + ($prod->price * $prod->tax) / 100, 1);
 
 
 
@@ -569,7 +581,7 @@ class CartController extends Controller
             $prod->price = round($prc, 2);
         }
 
-        $prod->price = round($prod->price + ($prod->price * $prod->tax) / 100, 2);
+        $prod->price = round($prod->price + ($prod->price * $prod->tax) / 100, 1);
 
         if (!empty($prod->attributes)) {
             $attrArr = json_decode($prod->attributes, true);
@@ -615,6 +627,8 @@ class CartController extends Controller
                 return 0;
             }
         }
+
+
         $cart->totalPrice = 0;
         foreach ($cart->items as $data)
             $cart->totalPrice += $data['price'];
@@ -628,27 +642,30 @@ class CartController extends Controller
             $data[3] = $data[0] + $tax;
         }
 
-        $cargoPrice = $this->getCargoPrice();
+        $cargoPrice = CartController::getCargoPrice();
 
         $data[1] = $cart->items[$itemid]['qty'];
         $data[2] = $cart->items[$itemid]['price'];
         $data[4] = $cart->items[$itemid]['item_price'];
-        $data[0] = round($data[0] * $curr->value, 2);
-        $data[2] = round($data[2] * $curr->value, 2);
-        $data[3] = round($data[3] * $curr->value, 2);
-        $data[4] = round($data[4] * $curr->value, 2);
-        $data[5] = round($data[3] + $cargoPrice, 2);
+        $data[0] = round($data[0] * $curr->value, 1);
+        $data[2] = round($data[2] * $curr->value, 1);
+        $data[3] = round($data[3] * $curr->value, 1);
+        $data[4] = round($data[4] * $curr->value, 1);
+        $data[5] = round($data[3] + $cargoPrice, 1);
         $data[6] = round($cargoPrice, 2);
         if ($gs->currency_format == 0) {
             $data[0] = $curr->sign . $data[0];
             $data[2] = $curr->sign . $data[2];
             $data[3] = $curr->sign . $data[3];
             $data[4] = $curr->sign . $data[4];
+            $data[5] = $curr->sign . $data[5];
+
         } else {
             $data[0] = $data[0] . $curr->sign;
             $data[2] = $data[2] . $curr->sign;
             $data[3] = $data[3] . $curr->sign;
             $data[4] = $data[4] . $curr->sign;
+            $data[5] = $data[5] . $curr->sign;
         }
         return response()->json($data);
     }
@@ -677,7 +694,7 @@ class CartController extends Controller
             $prod->price = round($prc, 2);
         }
 
-        $prod->price = round($prod->price + ($prod->price * $prod->tax) / 100, 2);
+        $prod->price = round($prod->price + ($prod->price * $prod->tax) / 100, 1);
 
         if (!empty($prod->attributes)) {
             $attrArr = json_decode($prod->attributes, true);
@@ -729,23 +746,29 @@ class CartController extends Controller
             $data[3] = $data[0] + $tax;
         }
 
+        $cargoPrice = CartController::getCargoPrice();
+
         $data[1] = $cart->items[$itemid]['qty'];
         $data[2] = $cart->items[$itemid]['price'];
         $data[4] = $cart->items[$itemid]['item_price'];
-        $data[0] = round($data[0] * $curr->value, 2);
-        $data[2] = round($data[2] * $curr->value, 2);
-        $data[3] = round($data[3] * $curr->value, 2);
-        $data[4] = round($data[4] * $curr->value, 2);
+        $data[0] = round($data[0] * $curr->value, 1);
+        $data[2] = round($data[2] * $curr->value, 1);
+        $data[3] = round($data[3] * $curr->value, 1);
+        $data[4] = round($data[4] * $curr->value, 1);
+        $data[5] = round($data[3] + $cargoPrice, 1);
+        $data[6] = round($cargoPrice, 2);
         if ($gs->currency_format == 0) {
             $data[0] = $curr->sign . $data[0];
             $data[2] = $curr->sign . $data[2];
             $data[3] = $curr->sign . $data[3];
             $data[4] = $curr->sign . $data[4];
+            $data[5] = $curr->sign . $data[5];
         } else {
             $data[0] = $data[0] . $curr->sign;
             $data[2] = $data[2] . $curr->sign;
             $data[3] = $data[3] . $curr->sign;
             $data[4] = $data[4] . $curr->sign;
+            $data[5] = $data[5] . $curr->sign;
         }
         return response()->json($data);
     }
@@ -783,13 +806,17 @@ class CartController extends Controller
                 $data[3] = $data[0] + $tax;
             }
 
+            $cargoPrice = CartController::getCargoPrice();
+            $data[5] = round($data[3] + $cargoPrice, 1);
+            $data[6] = round($cargoPrice, 2);
             if ($gs->currency_format == 0) {
-                $data[0] = $curr->sign . round($data[0] * $curr->value, 2);
-                $data[3] = $curr->sign . round($data[3] * $curr->value, 2);
+                $data[0] = $curr->sign . round($data[0] * $curr->value, 1);
+                $data[3] = $curr->sign . round($data[3] * $curr->value, 1);
+                $data[5] = $curr->sign . $data[5];
 
             } else {
-                $data[0] = round($data[0] * $curr->value, 2) . $curr->sign;
-                $data[3] = round($data[3] * $curr->value, 2) . $curr->sign;
+                $data[0] = round($data[0] * $curr->value, 1) . $curr->sign;
+                $data[3] = round($data[3] * $curr->value, 1) . $curr->sign;
             }
 
             $data[1] = count($cart->items);

@@ -20,7 +20,6 @@
             </div>
         </div>
     </div>
-
     <div class="main-container col1-layout wow bounceInUp animated">
 
         <div id="CssLoader">
@@ -238,28 +237,31 @@
                                             </td>
                                             <td style="" class="a-right">
                                                 <strong>
-                                                    <span class="price main-total">₺{{ Session::has('cart') ? number_format(round($mainTotal, 1), 2, ",", ".") : '0.00' }}</span>
+                                                    <span class="price main-total"
+                                                          id="main-total">₺{{ Session::has('cart') ? number_format(round($mainTotal, 1), 2, ",", ".") : '0.00' }}</span>
                                                 </strong>
                                             </td>
                                         </tr>
                                         </tfoot>
 
                                         <tbody>
-                                            <tr>
-                                                <td style="" class="a-left" colspan="1">
-                                                    {{ __('front.subtotal') }}
-                                                </td>
-                                                <td style="" class="a-right">
-                                                    <span class="price main-total">₺{{ Session::has('cart') ? number_format(round($subTotal, 1), 2, ",", ".") : '0.00' }}</span>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td style="" class="a-left" colspan="1">
+                                                {{ __('front.subtotal') }}
+                                            </td>
+                                            <td style="" class="a-right">
+                                                <span class="price main-total"
+                                                      id="cart-total">₺{{ Session::has('cart') ? number_format(round($subTotal, 1), 2, ",", ".") : '0.00' }}</span>
+                                            </td>
+                                        </tr>
                                         @if(Session::has('cart'))
                                             <tr>
                                                 <td style="" class="a-left" colspan="1">
                                                     {{ __('front.cargo') }}
                                                 </td>
                                                 <td style="" class="a-right">
-                                                    <span class="price" id="cargo-price">₺{{ number_format($cargoPrice, 2, ",", ".") }}</span>
+                                                    <span class="price"
+                                                          id="cargo-price">@if($cargoPrice == 0) {!! __('front.free_cargo') !!}  @else ₺{{ number_format($cargoPrice, 2, ",", ".") }} @endif</span>
                                                 </td>
                                             </tr>
                                         @endif

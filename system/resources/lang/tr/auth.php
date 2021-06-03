@@ -23,12 +23,44 @@ return [
     'Login' => 'Giriş yap',
     'Login_Header' => 'Hesabınıza Giriş Yapın',
 
+    'Logout' => 'Çıkış yap',
+
+    'Fullname' => 'Tam Adınız',
+    'Name' => 'İsim',
+    'Address' => 'Adres',
+    'Email' => 'E-posta',
+    'Phone' => 'Telefon',
     'Email_Address' => 'E-posta adresi',
     'Password' => 'Şifre',
     'Confirm_Password' => 'Şifre Onayla',
     'Forgot_Password' => 'Şifremi unuttum',
 
-    'Required_Fields' => 'Zorunlu alanlar'
+    'Required_Fields' => 'Zorunlu alanlar',
+
+
+    /**
+     * Dashboard
+     */
+
+    'my-account' => 'Hesabım',
+    'orders' => 'Siparişlerim',
+    'wishlist' => 'İstek Listem',
+    'user-favorites' => 'Favori Satıcılarım',
+    'messages' => 'Mesajlar',
+    'tickets' => 'Destek Kayıtları',
+    'disputes' => 'Sorun Bildir',
+    'edit-profile' => 'Profil Düzenle',
+    'reset-password' => 'Parola Değiştir',
+    'hello' => 'Merhaba, :name',
+    'profile-edit' => 'Profil Düzenle',
+
+
+    /**
+     * Messages
+     */
+    'dashboard_subtitle' => 'Hesabım panelinizden son hesap etkinliklerinizi görüntüleyebilirsiniz.',
+    'please_wait' => 'Lütfen bekleyiniz..',
+    'success_login' => 'Giriş başarılı.',
 
 
 

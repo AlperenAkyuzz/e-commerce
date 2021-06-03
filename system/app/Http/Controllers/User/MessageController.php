@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Classes\ParionMailer;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -14,6 +15,7 @@ use App\Models\Generalsetting;
 use App\Models\Notification;
 use App\Models\Pagesetting;
 use App\Models\User;
+use Ramsey\Uuid\Uuid;
 
 
 class MessageController extends Controller
@@ -23,37 +25,37 @@ class MessageController extends Controller
         $this->middleware('auth');
     }
 
-   public function messages()
+    public function messages()
     {
         $user = Auth::guard('web')->user();
-        $convs = Conversation::where('sent_user','=',$user->id)->orWhere('recieved_user','=',$user->id)->get();
-        return view('user.message.index',compact('user','convs'));
+        $convs = Conversation::where('sent_user', '=', $user->id)->orWhere('recieved_user', '=', $user->id)->get();
+        return view('user.message.index', compact('user', 'convs'));
     }
 
     public function message($id)
     {
-            $user = Auth::guard('web')->user();
-            $conv = Conversation::findOrfail($id);
-            return view('user.message.create',compact('user','conv'));
+        $user = Auth::guard('web')->user();
+        $conv = Conversation::findOrfail($id);
+        return view('user.message.create', compact('user', 'conv'));
     }
 
-    public function messagedelete($id)
+    public function messagedelete($uuid)
     {
-            $conv = Conversation::findOrfail($id);
-            if($conv->messages->count() > 0)
-            {
-                foreach ($conv->messages as $key) {
-                    $key->delete();
-                }
+        $user = Auth::guard('web')->user();
+        $conv = Conversation::where(['uuid' => $uuid, 'user_id' => $user->id])->firstOrFail();
+        if ($conv->messages->count() > 0) {
+            foreach ($conv->messages as $key) {
+                $key->delete();
             }
-            $conv->delete();
-            return redirect()->back()->with('success','Message Deleted Successfully');
+        }
+        $conv->delete();
+        return redirect()->back()->with('success', 'Message Deleted Successfully');
     }
 
     public function msgload($id)
     {
-            $conv = Conversation::findOrfail($id);
-            return view('load.usermsg',compact('conv'));
+        $conv = Conversation::findOrfail($id);
+        return view('load.usermsg', compact('conv'));
     }
 
     //Send email to user
@@ -61,9 +63,8 @@ class MessageController extends Controller
     {
         $data = 1;
         $user = User::findOrFail($request->user_id);
-        $vendor = User::where('email','=',$request->email)->first();
-        if(empty($vendor))
-        {
+        $vendor = User::where('email', '=', $request->email)->first();
+        if (empty($vendor)) {
             $data = 0;
             return response()->json($data);
         }
@@ -72,38 +73,34 @@ class MessageController extends Controller
         $to = $vendor->email;
         $name = $request->name;
         $from = $request->email;
-        $msg = "Name: ".$name."\nEmail: ".$from."\nMessage: ".$request->message;
+        $msg = "Name: " . $name . "\nEmail: " . $from . "\nMessage: " . $request->message;
         $gs = Generalsetting::findOrfail(1);
-        if($gs->is_smtp == 1)
-        {
-        $data = [
-            'to' => $vendor->email,
-            'subject' => $request->subject,
-            'body' => $msg,
-        ];
+        if ($gs->is_smtp == 1) {
+            $data = [
+                'to' => $vendor->email,
+                'subject' => $request->subject,
+                'body' => $msg,
+            ];
 
-        $mailer = new ParionMailer();
-        $mailer->sendCustomMail($data);
-        }
-        else
-        {
-        $headers = "From: ".$gs->from_name."<".$gs->from_email.">";
-        mail($to,$subject,$msg,$headers);
+            $mailer = new ParionMailer();
+            $mailer->sendCustomMail($data);
+        } else {
+            $headers = "From: " . $gs->from_name . "<" . $gs->from_email . ">";
+            mail($to, $subject, $msg, $headers);
         }
 
-        $conv = Conversation::where('sent_user','=',$user->id)->where('subject','=',$subject)->first();
-        if(isset($conv)){
+        $conv = Conversation::where('sent_user', '=', $user->id)->where('subject', '=', $subject)->first();
+        if (isset($conv)) {
             $msg = new Message();
             $msg->conversation_id = $conv->id;
             $msg->message = $request->message;
             $msg->sent_user = $user->id;
             $msg->save();
             return response()->json($data);
-        }
-        else{
+        } else {
             $message = new Conversation();
             $message->subject = $subject;
-            $message->sent_user= $request->user_id;
+            $message->sent_user = $request->user_id;
             $message->recieved_user = $vendor->id;
             $message->message = $request->message;
             $message->save();
@@ -121,6 +118,7 @@ class MessageController extends Controller
     {
         $msg = new Message();
         $input = $request->all();
+        $msg->uuid = Uuid::uuid1();
         $msg->fill($input)->save();
         //--- Redirect Section
         $msg = 'Message Sent!';
@@ -130,41 +128,54 @@ class MessageController extends Controller
 
     public function adminmessages()
     {
-            $user = Auth::guard('web')->user();
-            $convs = AdminUserConversation::where('type','=','Ticket')->where('user_id','=',$user->id)->get();
-            return view('user.ticket.index',compact('convs'));
+        $user = Auth::guard('web')->user();
+        $convs = AdminUserConversation::where('type', '=', 'Ticket')->where('user_id', '=', $user->id)->get();
+        return view('user.ticket.index', compact('convs'));
     }
 
     public function adminDiscordmessages()
     {
-            $user = Auth::guard('web')->user();
-            $convs = AdminUserConversation::where('type','=','Dispute')->where('user_id','=',$user->id)->get();
-            return view('user.dispute.index',compact('convs'));
+        $user = Auth::guard('web')->user();
+        $convs = AdminUserConversation::where('type', '=', 'Dispute')->where('user_id', '=', $user->id)->orderByDesc('id')->get();
+        $orders = Order::where('user_id','=',$user->id)->orderBy('id','desc')->get();
+        //return view('user.dispute.index',compact('convs'));
+        return view('theme::pages.user.dispute.index', compact('convs', 'orders'));
     }
 
-    public function messageload($id)
+    public function messageload($uuid)
     {
-            $conv = AdminUserConversation::findOrfail($id);
-            return view('load.usermessage',compact('conv'));
+        $user = Auth::guard('web')->user();
+        $conv = AdminUserConversation::where(['user_id' => $user->id,'uuid' => $uuid])->firstOrFail();
+        return view('theme::load.usermessage', compact('conv'));
     }
 
-    public function adminmessage($id)
+    public function adminmessage($uuid)
     {
-            $conv = AdminUserConversation::findOrfail($id);
-            return view('user.ticket.create',compact('conv'));
+        $user = Auth::guard('web')->user();
+        $conv = AdminUserConversation::where(['user_id' => $user->id,'uuid' => $uuid])->firstOrFail();
+        return view('theme::pages.user.dispute.show', compact('conv'));
+        //return view('user.ticket.create', compact('conv'));
     }
 
-    public function adminmessagedelete($id)
+    public function adminmessagedelete($uuid)
     {
-            $conv = AdminUserConversation::findOrfail($id);
-            if($conv->messages->count() > 0)
-            {
-                foreach ($conv->messages as $key) {
-                    $key->delete();
-                }
+        $user = Auth::guard('web')->user();
+        $conv = AdminUserConversation::where(['uuid' => $uuid, 'user_id' => $user->id])->firstOrFail();
+        if ($conv->messages->count() > 0) {
+            foreach ($conv->messages as $key) {
+                $key->delete();
             }
-            $conv->delete();
-            return redirect()->back()->with('success','Message Deleted Successfully');
+        }
+        $conv->delete();
+        return redirect()->back()->with('success', 'Mesaj basariyla silindi');
+    }
+
+    public function adminmessagesolve($uuid) {
+        $user = Auth::guard('web')->user();
+        $conv = AdminUserConversation::where(['uuid' => $uuid, 'user_id' => $user->id])->firstOrFail();
+        $conv->status = 2;
+        $conv->save();
+        return redirect()->back()->with('success', 'Sorun cozuldu olarak isaretlendi.');
     }
 
     public function adminpostmessage(Request $request)
@@ -176,7 +187,7 @@ class MessageController extends Controller
         $notification->conversation_id = $msg->conversation->id;
         $notification->save();
         //--- Redirect Section
-        $msg = 'Message Sent!';
+        $msg = 'success';
         return response()->json($msg);
         //--- Redirect Section Ends
     }
@@ -186,48 +197,48 @@ class MessageController extends Controller
         $data = 1;
         $user = Auth::guard('web')->user();
         $gs = Generalsetting::findOrFail(1);
-        $subject = $request->subject;
+        $subject = $request->subject . ' | Sustaíly Musteri Sistemi';
         $to = Pagesetting::find(1)->contact_email;
         $from = $user->email;
-        $msg = "Email: ".$from."\nMessage: ".$request->message;
-        if($gs->is_smtp == 1)
-        {
+        $msg = "Email: " . $from . "<br>Mesaj: " . $request->message;
+        if ($request->type != 'Ticket') {
+            $msg = "<br>Siparis ID: " . $request->order . '<br>' . $msg;
+        }
+        if ($gs->is_smtp == 1) {
             $data = [
-            'to' => $to,
-            'subject' => $subject,
-            'body' => $msg,
-        ];
+                'to' => $to,
+                'subject' => $subject,
+                'body' => $msg,
+            ];
 
-        $mailer = new ParionMailer();
-        $mailer->sendCustomMail($data);
+            $mailer = new ParionMailer();
+            $mailer->sendCustomMail($data);
+        } else {
+            $headers = "From: " . $gs->from_name . "<" . $gs->from_email . ">";
+            mail($to, $subject, $msg, $headers);
         }
-        else
-        {
-            $headers = "From: ".$gs->from_name."<".$gs->from_email.">";
-        mail($to,$subject,$msg,$headers);
-        }
-        if($request->type == 'Ticket'){
-            $conv = AdminUserConversation::where('type','=','Ticket')->where('user_id','=',$user->id)->where('subject','=',$subject)->first();
-        }
-        else{
-            $conv = AdminUserConversation::where('type','=','Dispute')->where('user_id','=',$user->id)->where('subject','=',$subject)->first();
+        if ($request->type == 'Ticket') {
+            $conv = AdminUserConversation::where('type', '=', 'Ticket')->where('user_id', '=', $user->id)->where('subject', '=', $subject)->first();
+        } else {
+            $conv = AdminUserConversation::where('type', '=', 'Dispute')->where('user_id', '=', $user->id)->where('subject', '=', $subject)->first();
         }
 
-        if(isset($conv)){
+        if (isset($conv)) {
             $msg = new AdminUserMessage();
             $msg->conversation_id = $conv->id;
             $msg->message = $request->message;
             $msg->user_id = $user->id;
             $msg->save();
-            return response()->json($data);
-        }
-        else{
+            return response()->json(['status' => 'success']);
+        } else {
+            Uuid::uuid4()
             $message = new AdminUserConversation();
             $message->subject = $subject;
-            $message->user_id= $user->id;
+            $message->user_id = $user->id;
             $message->message = $request->message;
             $message->order_number = $request->order;
             $message->type = $request->type;
+            $message->uuid = Uuid::uuid1();
             $message->save();
             $notification = new Notification;
             $notification->conversation_id = $message->id;
@@ -237,8 +248,8 @@ class MessageController extends Controller
             $msg->message = $request->message;
             $msg->user_id = $user->id;
             $msg->save();
-            return response()->json($data);
+            return response()->json(['status' => 'success']);
 
         }
-}
+    }
 }

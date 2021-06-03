@@ -12,6 +12,22 @@ return [
     'default' => 'Varsayılan',
     'continue' => 'Devam Et',
     'previous' => 'Önceki',
+    'message' => 'Mesaj',
+    'subject' => 'Konu',
+    'search' => 'Ara',
+
+    /**
+     * Buttons
+     */
+    'confirm' => 'Onayla',
+    'delete' => 'Sil',
+    'cancel' => 'İptal',
+    'action' => 'Eylem',
+    'print' => 'Yazdır',
+    'submit' => 'Gönder',
+    'edit' => 'Düzenle',
+    'dispute-close' => 'Çözüldü',
+
 
     /**
      * Forms
@@ -29,24 +45,45 @@ return [
     /**
      * Messages
      */
+    'message-success' => 'Mesaj başarıyla gönderildi',
     'error_message' => 'Bir hata oluştu.',
+    'confirm_delete' => 'Silmeyi Onayla',
+    'confirm_delete_title' => 'Silmek istediğinizden emin misiniz?',
+    'no_matching_result_was_found' => 'Sonuç bulunamadı.',
+    'search_product_category_vendor' => 'Ürün, kategori veya mağaza ara',
+
+    /**
+     * Status
+     */
+    'free_cargo' => '<span style="color:green">Kargo Bedava</span>',
 
     /**
      * Orders
      */
     'orders' => 'Siparişler',
+    'order' => 'Sipariş',
+    'order-total' => 'Tutar',
+    'order-status' => 'Durum',
+    'order-details' => 'Sipariş Detayları',
+    'order-date' => 'Sipariş Tarihi',
 
     /**
      * Payment
      */
     'payment' => 'Ödeme',
     'payment_method' => 'Ödeme Yöntemi',
+    'payment_information' => 'Ödeme Bilgisi',
+    'payment_status' => 'Ödeme Durumu',
+    'paid_amount' => 'Tutar',
+    'transaction_id' => 'İşlem Numarası',
+    'enter_transaction_id' => 'Lütfen işlem numarası giriniz',
 
 
     /**
      * Products
      */
     'product' => 'Ürün',
+    'products' => 'Ürünler',
     'product_name' => 'Ürün Adı',
     'product_description' => 'Ürün Açıklaması',
     'add_cart' => 'Sepete Ekle',
@@ -136,6 +173,9 @@ return [
     'billing_information' => 'Fatura Bilgileri',
     'shipping_information' => 'Teslimat Bilgileri',
     'ship_to_different' => 'Farklı Bir Adrese mi Gönderiyorsunuz?',
+    'shipping_method' => 'Teslimat Yöntemi',
+    'ship_to_address' => 'Adrese Teslim',
+    'order_note' => 'Sipariş Notu',
 
 
     /**
@@ -159,4 +199,19 @@ return [
     'fast-access' => 'Hızlı Erişim',
     'contact-us' => 'İletişim',
     'faq' => 'SSS',
+
+    /**
+     * User Dashboard
+     */
+    'add-dispute' => 'Sorun Bildir',
+    'view-all' => 'Tümünü Göster',
+    'recent_orders' => 'Son Siparişler',
+    'order-id' => 'Sipariş #',
+    'order-number' => 'Sipariş Numarası',
+    'date' => 'Tarih',
+
+    'view' => 'Görüntüle',
+    'account-information' => 'Hesap Bilgileri',
+
+
 ];

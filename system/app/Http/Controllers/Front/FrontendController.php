@@ -405,7 +405,7 @@ class FrontendController extends Controller
         $page =  DB::table('pages')->where('slug',$slug)->first();
         if(empty($page))
         {
-            return response()->view('errors.404')->setStatusCode(404);
+            return response()->view('theme::errors.404')->setStatusCode(404);
         }
 
         dd($page);

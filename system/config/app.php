@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Istanbul',
 
     /*
     |--------------------------------------------------------------------------
@@ -209,6 +209,9 @@ return [
 
         // Debug bar
         Barryvdh\Debugbar\ServiceProvider::class,
+
+        // Hook Service Provider
+        App\Providers\HookServiceProvider::class,
     ],
 
     /*

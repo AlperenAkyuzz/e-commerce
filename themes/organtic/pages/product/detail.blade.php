@@ -54,6 +54,22 @@
 
 @section('theme::scripts')
 
+    <script>
+        var $root = $('html, body');
+        $('.rating-links a').click(function(event){
+            event.preventDefault();
+            var href = $(this).data('href');
+            $root.animate({
+                scrollTop: $(href).offset().top - 300
+            }, 500);
+            $('#review_tab_link').addClass('active');
+            $('#description_tab_link').removeClass('active');
+            $('#productTabContent #product_tabs_description').removeClass('in active');
+            $('#productTabContent #reviews_tabs').addClass('in active');
+            return false;
+        });
+    </script>
+
     <!--<script src="{{ asset('themes/organtic/assets/js/cloud-zoom.js') }}"></script>-->
     <!--<script src="{{ asset('themes/organtic/assets/js/product/events.js?v=0.0.11') }}"></script>-->
 @endsection

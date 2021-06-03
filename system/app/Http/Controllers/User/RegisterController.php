@@ -20,21 +20,28 @@ class RegisterController extends Controller
 
         $gs = Generalsetting::findOrFail(1);
 
+        /*
         if ($gs->is_capcha == 1) {
             $value = session('captcha_string');
             if ($request->codes != $value) {
                 return response()->json(array('errors' => [0 => 'Please enter Correct Capcha Code.']));
             }
-        }
-
+        }*/
 
         //--- Validation Section
 
         $rules = [
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed|min:8',
+            'g-recaptcha-response' => ['required', 'recaptcha']
         ];
-        $validator = Validator::make($request->all(), $rules);
+        $customs = [
+            'g-recaptcha-response.recaptcha' => 'Insan olduğunuz doğrulunamadı.',
+            'password.min' => 'Şifre uzunluğu en az 8 karakter olmalıdır.',
+            'email.unique' => 'Bu e-posta ile daha önce hesap oluşturulmuş.',
+            'password.confirmed' => 'Şifre onayı eşleşmiyor.',
+        ];
+        $validator = Validator::make($request->all(), $rules, $customs);
 
         if ($validator->fails()) {
             return response()->json(array('errors' => $validator->getMessageBag()->toArray()));

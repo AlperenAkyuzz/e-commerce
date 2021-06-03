@@ -102,8 +102,10 @@
                         @endphp
                         <div style="width:{{ (100 * $rate / 5) }}%" class="rating"></div>
                     </div>
-                    <p class="rating-links"><a
-                                href="#reviews_tabs">{{ __('front.review_count', ['count' => $product->ratings->count()])}}</a>
+                    <p class="rating-links">
+                        <a href=""
+                           data-href="#productTabContent">{{ __('front.review_count', ['count' => $product->ratings->count()])}}
+                        </a>
                         {{--<span class="separator">|</span> <a href="#">{{ __('front.add_review') }}</a>--}}
 
                     </p>
@@ -140,7 +142,7 @@
                                 <del>{{ $product->showPreviousPrice() }}</del>
                             @endif
                             <span id="product-price-48" class="price"
-                                      data-price="{{number_format($attrPrice,2)}}">₺{{number_format($attrPrice,2,",",".")}}</s></span>
+                                  data-price="{{number_format($attrPrice,2)}}">₺{{number_format($attrPrice,2,",",".")}}</s></span>
                         </p>
 
 
@@ -218,24 +220,24 @@
                                                     @endif
 
 
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="hidden" class="keys" value="">
-                                                            <input type="hidden" class="values" value="">
-                                                            <input type="radio" id="{{$attrKey}}{{ $optionKey }}"
-                                                                   name="{{ $attrKey }}"
-                                                                   class="custom-control-input product-attr"
-                                                                   data-key="{{ $attrKey }}"
-                                                                   data-price="{{ $attrVal['prices'][$optionKey] * $curr->value }}"
-                                                                   value="{{ $optionVal }}" {{ $loop->first ? 'checked' : '' }}>
-                                                            <label class="custom-control-label"
-                                                                   for="{{$attrKey}}{{ $optionKey }}"><span></span>{{ $optionVal }}
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="hidden" class="keys" value="">
+                                                        <input type="hidden" class="values" value="">
+                                                        <input type="radio" id="{{$attrKey}}{{ $optionKey }}"
+                                                               name="{{ $attrKey }}"
+                                                               class="custom-control-input product-attr"
+                                                               data-key="{{ $attrKey }}"
+                                                               data-price="{{ $attrVal['prices'][$optionKey] * $curr->value }}"
+                                                               value="{{ $optionVal }}" {{ $loop->first ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                               for="{{$attrKey}}{{ $optionKey }}"><span></span>{{ $optionVal }}
 
-                                                                @if (!empty($attrVal['prices'][$optionKey]))
-                                                                    +
-                                                                    {{$curr->sign}} {{$attrVal['prices'][$optionKey] * $curr->value}}
-                                                                @endif
-                                                            </label>
-                                                        </div>
+                                                            @if (!empty($attrVal['prices'][$optionKey]))
+                                                                +
+                                                                {{$curr->sign}} {{$attrVal['prices'][$optionKey] * $curr->value}}
+                                                            @endif
+                                                        </label>
+                                                    </div>
                                                 @endforeach
                                             </div>
                                         </div>

@@ -42,15 +42,17 @@ class OrderController extends Controller
     public function order($id)
     {
         $user = Auth::guard('web')->user();
-        $order = Order::findOrfail($id);
+        $order = Order::where(['user_id' => $user->id, 'id' => $id])->firstOrFail(); //Order::findOrfail($id);
         $cart = unserialize(bzdecompress(utf8_decode($order->cart)));
-        return view('user.order.details',compact('user','order','cart'));
+        //return view('user.order.details',compact('user','order','cart'));
+        //dd($order);
+        return view('theme::pages.user.order.details',compact('user','order','cart'));
     }
 
     public function orderdownload($slug,$id)
     {
         $user = Auth::guard('web')->user();
-        $order = Order::where('order_number','=',$slug)->first();
+        $order = Order::where(['order_number' => $slug, 'user_id' => $user->id])->firstOrFail();
         $prod = Product::findOrFail($id);
         if(!isset($order) || $prod->type == 'Physical' || $order->user_id != $user->id)
         {
@@ -62,9 +64,9 @@ class OrderController extends Controller
     public function orderprint($id)
     {
         $user = Auth::guard('web')->user();
-        $order = Order::findOrfail($id);
+        $order = Order::where(['user_id' => $user->id, 'id' => $id])->firstOrFail();
         $cart = unserialize(bzdecompress(utf8_decode($order->cart)));
-        return view('user.order.print',compact('user','order','cart'));
+        return view('theme::pages.user.order.print',compact('user','order','cart'));
     }
 
     public function trans()
@@ -75,7 +77,7 @@ class OrderController extends Controller
         $order->txnid = $trans;
         $order->update();
         $data = $order->txnid;
-        return response()->json($data);            
-    }  
+        return response()->json($data);
+    }
 
 }

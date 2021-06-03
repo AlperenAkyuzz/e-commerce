@@ -60,7 +60,7 @@ class CatalogController extends Controller
         $sort = $request->sort;
         $search = $request->search;
         $minprice = round(($minprice / $curr->value), 2);
-        $maxprice = round(($maxprice / $curr->value), 2);
+        $maxprice = round((($maxprice * 1.5) / $curr->value), 2);
 
         $vendors = $request->vendorID;
 
@@ -190,6 +190,7 @@ class CatalogController extends Controller
         //$pUsers = $pUsers->unique();
         $prods = (new Collection(Product::filterProducts($prods)))->paginate(12);
 
+        //dd($prods);
 
         $data['brands'] = $brands;
         $data['vendors'] = $pUsers;
@@ -253,7 +254,7 @@ class CatalogController extends Controller
         $this->code_image();
         $productt = Product::where('slug', '=', $slug)->firstOrFail();
         if ($productt->status == 0) {
-            return response()->view('errors.404')->setStatusCode(404);
+            return response()->view('theme::errors.404')->setStatusCode(404);
         }
         $productt->views += 1;
         $productt->update();

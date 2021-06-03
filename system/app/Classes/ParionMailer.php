@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ShaOn
- * Date: 11/29/2018
- * Time: 12:49 AM
- */
 
 namespace App\Classes;
 
@@ -20,24 +14,7 @@ class ParionMailer
 {
     public function __construct()
     {
-        $gs = Generalsetting::findOrFail(1);
-        if($gs->header_email == 'smtp') {
-            $mail_driver = 'smtp';
-        }
-        else{
-            if($gs->header_email == 'sendmail') {
-                $mail_driver = 'sendmail';
-            }
-            else {
-                $mail_driver = 'smtp';
-            }
-        }
-        Config::set('mail.driver', $mail_driver);
-        Config::set('mail.host', $gs->smtp_host);
-        Config::set('mail.port', $gs->smtp_port);
-        Config::set('mail.encryption', $gs->email_encryption);
-        Config::set('mail.username', $gs->smtp_user);
-        Config::set('mail.password', $gs->smtp_pass);
+       // hello from world.
     }
 
     public function sendAutoOrderMail(array $mailData,$id)
@@ -141,7 +118,7 @@ class ParionMailer
             });
         }
         catch (\Exception $e){
-            //die($e->getMessage());
+            die($e->getMessage());
             //return $e->getMessage();
         }
         return true;

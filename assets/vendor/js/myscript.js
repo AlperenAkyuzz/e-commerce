@@ -567,49 +567,43 @@ if(admin_loader == 1)
 
 // MESSAGE FORM
 
-$(document).on('submit','#messageform',function(e){
-  e.preventDefault();
-  var href = $(this).data('href');
-  if(admin_loader == 1)
-  {
-  $('.gocover').show();
-  }
-  $('button.mybtn1').prop('disabled',true);
-      $.ajax({
-       method:"POST",
-       url:$(this).prop('action'),
-       data:new FormData(this),
-       contentType: false,
-       cache: false,
-       processData: false,
-       success:function(data)
-       {
-          if ((data.errors)) {
-          $('.alert-success').hide();
-          $('.alert-danger').show();
-          $('.alert-danger ul').html('');
-            for(var error in data.errors)
-            {
-              $('.alert-danger ul').append('<li>'+ data.errors[error] +'</li>')
+    $(document).on('submit', '#messageform', function (e) {
+        e.preventDefault();
+        var href = $(this).data('href');
+        if (admin_loader == 1) {
+            $('.gocover').show();
+        }
+        $('button.mybtn1').prop('disabled', true);
+        $.ajax({
+            method: "POST",
+            url: $(this).prop('action'),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                if ((data.errors)) {
+                    $('.alert-success').hide();
+                    $('.alert-danger').show();
+                    $('.alert-danger ul').html('');
+                    for (var error in data.errors) {
+                        $('.alert-danger ul').append('<li>' + data.errors[error] + '</li>')
+                    }
+                    $('#messageform textarea').val('');
+                } else {
+                    $('.alert-danger').hide();
+                    $('.alert-success').show();
+                    $('.alert-success p').html(data);
+                    $('#messageform textarea').val('');
+                    $('#messages').load(href);
+                }
+                if (admin_loader == 1) {
+                    $('.gocover').hide();
+                }
+                $('button.mybtn1').prop('disabled', false);
             }
-            $('#messageform textarea').val('');
-          }
-          else
-          {
-            $('.alert-danger').hide();
-            $('.alert-success').show();
-            $('.alert-success p').html(data);
-            $('#messageform textarea').val('');
-            $('#messages').load(href);
-          }
-  if(admin_loader == 1)
-  {
-          $('.gocover').hide();
-  }
-          $('button.mybtn1').prop('disabled',false);
-       }
-      });
-});
+        });
+    });
 
 // MESSAGE FORM ENDS
 
